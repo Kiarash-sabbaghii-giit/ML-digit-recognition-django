@@ -1,37 +1,24 @@
 {% extends 'base.html' %}
-{% load static %}
 
 {% block title %}Home - AI Digit Recognizer{% endblock %}
 
 {% block content %}
 <div class="container">
-    <!-- Header -->
+    <!-- HEADER -->
     <header class="header" data-aos="fade-down" data-aos-duration="1000">
-        <div class="header-badge">
-            <i class="fas fa-robot"></i>
-            <span>AI Powered</span>
-        </div>
+        <div class="header-badge"><i class="fas fa-robot"></i> <span>AI Powered</span></div>
         <h1 class="glitch-text" data-text="Digit Recognizer">Digit Recognizer</h1>
         <p class="subtitle">Next-Generation Handwritten Digit Recognition</p>
         <div class="header-stats">
-            <div class="stat-item">
-                <span class="stat-number">97.8%</span>
-                <span class="stat-label">Accuracy</span>
-            </div>
+            <div class="stat-item"><span class="stat-number">97.8%</span><span class="stat-label">Accuracy</span></div>
             <div class="stat-divider"></div>
-            <div class="stat-item">
-                <span class="stat-number">5</span>
-                <span class="stat-label">ML Models</span>
-            </div>
+            <div class="stat-item"><span class="stat-number">5</span><span class="stat-label">ML Models</span></div>
             <div class="stat-divider"></div>
-            <div class="stat-item">
-                <span class="stat-number">50K+</span>
-                <span class="stat-label">Images Trained</span>
-            </div>
+            <div class="stat-item"><span class="stat-number">50K+</span><span class="stat-label">Images Trained</span></div>
         </div>
     </header>
-    
-    <!-- Upload Section -->
+
+    <!-- UPLOAD -->
     <section class="upload-section" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
         <div class="upload-area" id="uploadArea">
             <div class="upload-content">
@@ -42,95 +29,44 @@
                 <h3>Drop Your Image Here</h3>
                 <p>Supported: PNG, JPG, JPEG • Max: 5MB</p>
                 <div class="upload-actions">
-                    <label for="fileInput" class="upload-btn">
-                        <i class="fas fa-folder-open"></i>
-                        Browse Files
-                    </label>
+                    <label for="fileInput" class="upload-btn"><i class="fas fa-folder-open"></i> Browse Files</label>
                     <span class="upload-or">or</span>
-                    <button class="upload-demo-btn" id="demoBtn">
-                        <i class="fas fa-play"></i>
-                        Try Demo
-                    </button>
+                    <button class="upload-demo-btn" id="demoBtn"><i class="fas fa-play"></i> Try Demo</button>
                 </div>
                 <input type="file" id="fileInput" accept="image/*" hidden />
             </div>
-            <div class="drag-overlay" id="dragOverlay">
-                <i class="fas fa-file-image"></i>
-                <h4>Drop to Upload</h4>
-            </div>
+            <div class="drag-overlay" id="dragOverlay"><i class="fas fa-file-image"></i><h4>Drop to Upload</h4></div>
         </div>
     </section>
-    
-    <!-- Result Section -->
+
+    <!-- RESULT -->
     <section class="result-section" id="resultSection" style="display: none;">
         <div class="result-grid">
-            <!-- Preview -->
             <div class="preview-box" data-aos="fade-right" data-aos-duration="800">
-                <div class="preview-header">
-                    <i class="fas fa-image"></i>
-                    <span>Uploaded Image</span>
-                    <button class="preview-close" id="closeResult">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <div class="preview-content">
-                    <img id="imagePreview" src="" alt="Preview" />
-                </div>
-                <div class="preview-footer">
-                    <span id="imageSize">0 KB</span>
-                    <span id="imageDimensions">0x0</span>
-                </div>
+                <div class="preview-header"><i class="fas fa-image"></i><span>Uploaded Image</span><button class="preview-close" id="closeResult"><i class="fas fa-times"></i></button></div>
+                <div class="preview-content"><img id="imagePreview" src="" alt="Preview" /></div>
+                <div class="preview-footer"><span id="imageSize">0 KB</span><span id="imageDimensions">0x0</span></div>
             </div>
-            
-            <!-- Result -->
+
             <div class="result-box" data-aos="fade-left" data-aos-duration="800" data-aos-delay="200">
-                <div class="result-header">
-                    <i class="fas fa-robot"></i>
-                    <span>AI Prediction</span>
-                    <span class="result-status" id="resultStatus">
-                        <i class="fas fa-spinner fa-spin"></i>
-                        Analyzing...
-                    </span>
-                </div>
-                
-                <div class="digit-display">
-                    <span class="digit" id="predictedDigit">?</span>
-                    <span class="digit-label">Predicted Digit</span>
-                </div>
-                
+                <div class="result-header"><i class="fas fa-robot"></i><span>AI Prediction</span><span class="result-status" id="resultStatus"><i class="fas fa-spinner fa-spin"></i> Analyzing...</span></div>
+                <div class="digit-display"><span class="digit" id="predictedDigit">?</span><span class="digit-label">Predicted Digit</span></div>
                 <div class="confidence-section">
-                    <div class="confidence-header">
-                        <span>Confidence Level</span>
-                        <span class="confidence-text" id="confidenceText">0%</span>
-                    </div>
-                    <div class="confidence-bar">
-                        <div class="confidence-fill" id="confidenceFill"></div>
-                    </div>
-                    <div class="confidence-markers">
-                        <span>0%</span>
-                        <span>50%</span>
-                        <span>100%</span>
-                    </div>
+                    <div class="confidence-header"><span>Confidence Level</span><span class="confidence-text" id="confidenceText">0%</span></div>
+                    <div class="confidence-bar"><div class="confidence-fill" id="confidenceFill"></div></div>
+                    <div class="confidence-markers"><span>0%</span><span>50%</span><span>100%</span></div>
                 </div>
-                
                 <div class="probabilities" id="probabilities"></div>
-                
                 <div class="result-actions">
-                    <button class="btn btn-primary" id="saveResult">
-                        <i class="fas fa-save"></i> Save
-                    </button>
-                    <button class="btn btn-secondary" id="resetBtn">
-                        <i class="fas fa-redo"></i> New
-                    </button>
-                    <button class="btn btn-download" id="downloadResult">
-                        <i class="fas fa-download"></i> Report
-                    </button>
+                    <button class="btn btn-primary" id="saveResult"><i class="fas fa-save"></i> Save</button>
+                    <button class="btn btn-secondary" id="resetBtn"><i class="fas fa-redo"></i> New</button>
+                    <button class="btn btn-download" id="downloadResult"><i class="fas fa-download"></i> Report</button>
                 </div>
             </div>
         </div>
     </section>
-    
-    <!-- Features -->
+
+    <!-- FEATURES -->
     <section class="features-section" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
         <h2><i class="fas fa-star"></i> Why Choose AI Recognizer?</h2>
         <div class="features-grid">
@@ -161,8 +97,201 @@
         </div>
     </section>
 </div>
-{% endblock %}
 
-{% block extra_js %}
-<script src="{% static 'js/main.js' %}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const resultSection = document.getElementById('resultSection');
+    const imagePreview = document.getElementById('imagePreview');
+    const predictedDigit = document.getElementById('predictedDigit');
+    const confidenceFill = document.getElementById('confidenceFill');
+    const confidenceText = document.getElementById('confidenceText');
+    const probabilitiesContainer = document.getElementById('probabilities');
+    const resetBtn = document.getElementById('resetBtn');
+    const saveBtn = document.getElementById('saveResult');
+    const closeBtn = document.getElementById('closeResult');
+    const downloadBtn = document.getElementById('downloadResult');
+    const imageSize = document.getElementById('imageSize');
+    const imageDimensions = document.getElementById('imageDimensions');
+    const demoBtn = document.getElementById('demoBtn');
+
+    let isProcessing = false;
+
+    function getCsrfToken() {
+        return document.querySelector('[name=csrfmiddlewaretoken]')?.value || '';
+    }
+
+    function showMessage(message, type) {
+        var div = document.createElement('div');
+        div.className = 'toast-message';
+        div.style.cssText = 'position:fixed;bottom:30px;right:30px;z-index:9999;padding:14px 24px;border-radius:12px;background:rgba(15,12,41,0.95);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.05);color:#fff;font-size:0.9rem;display:flex;align-items:center;gap:12px;transform:translateX(120%);transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.3)';
+        div.innerHTML = '<i class="fas ' + (type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle') + '" style="color:' + (type === 'error' ? '#f5576c' : '#4facfe') + ';"></i> ' + message;
+        document.body.appendChild(div);
+        setTimeout(function() { div.style.transform = 'translateX(0)'; }, 10);
+        setTimeout(function() { div.style.transform = 'translateX(120%)'; setTimeout(function() { div.remove(); }, 300); }, 3000);
+    }
+
+    function resetUI() {
+        gsap.to(resultSection, {
+            duration: 0.4, opacity: 0, y: -20, ease: 'power2.in',
+            onComplete: function() {
+                resultSection.style.display = 'none';
+                uploadArea.style.display = 'block';
+                fileInput.value = '';
+                isProcessing = false;
+            }
+        });
+    }
+
+    function updateResult(data) {
+        var digit = data.digit;
+        var confidence = data.confidence;
+        var probs = data.all_probabilities;
+
+        predictedDigit.textContent = digit;
+        predictedDigit.style.animation = 'none';
+        setTimeout(function() { predictedDigit.style.animation = 'popIn 0.5s ease'; }, 10);
+
+        setTimeout(function() {
+            confidenceFill.style.width = (confidence * 100) + '%';
+            confidenceText.textContent = (confidence * 100).toFixed(2) + '%';
+            var color = confidence > 0.8 ? '#4facfe' : confidence > 0.5 ? '#f093fb' : '#f5576c';
+            confidenceFill.style.background = 'linear-gradient(90deg, ' + color + ', ' + color + ')';
+        }, 300);
+
+        probabilitiesContainer.innerHTML = '';
+        var maxProb = Math.max.apply(null, probs);
+        probs.forEach(function(prob, index) {
+            var item = document.createElement('div');
+            item.className = 'prob-item';
+            var isHighest = prob === maxProb;
+            var pct = (prob * 100).toFixed(1);
+            item.innerHTML = '<div class="num">' + index + '</div><div class="bar"><div class="bar-fill" style="width:0%;' + (isHighest ? 'background:linear-gradient(90deg,#f093fb,#f5576c);' : '') + '"></div></div><div class="pct">' + pct + '%</div>';
+            probabilitiesContainer.appendChild(item);
+            setTimeout(function() {
+                var fill = item.querySelector('.bar-fill');
+                fill.style.width = pct + '%';
+            }, 100 + index * 40);
+        });
+    }
+
+    function saveToHistory(data) {
+        var history = JSON.parse(localStorage.getItem('digitHistory') || '[]');
+        history.unshift({
+            digit: data.digit,
+            confidence: data.confidence,
+            timestamp: new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
+            id: Date.now()
+        });
+        if (history.length > 20) history = history.slice(0, 20);
+        localStorage.setItem('digitHistory', JSON.stringify(history));
+    }
+
+    function handleFile(file) {
+        if (!file || !file.type.startsWith('image/')) { showMessage('Please select a valid image', 'error'); return; }
+        if (file.size > 5 * 1024 * 1024) { showMessage('Image must be under 5MB', 'error'); return; }
+        if (isProcessing) return;
+        isProcessing = true;
+
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var img = new Image();
+            img.onload = function() {
+                imageDimensions.textContent = this.naturalWidth + 'x' + this.naturalHeight;
+                imageSize.textContent = (file.size / 1024).toFixed(1) + ' KB';
+            };
+            img.src = e.target.result;
+            imagePreview.src = e.target.result;
+            resultSection.style.display = 'block';
+            uploadArea.style.display = 'none';
+            gsap.from(resultSection, { duration: 0.6, opacity: 0, y: 30, ease: 'power2.out' });
+            predictedDigit.textContent = '...';
+            confidenceFill.style.width = '0%';
+            confidenceText.textContent = '0%';
+            probabilitiesContainer.innerHTML = '';
+        };
+        reader.readAsDataURL(file);
+
+        var formData = new FormData();
+        formData.append('image', file);
+
+        fetch('/predict/', {
+            method: 'POST',
+            body: formData,
+            headers: { 'X-CSRFToken': getCsrfToken() }
+        })
+        .then(function(response) { return response.json(); })
+        .then(function(data) {
+            isProcessing = false;
+            if (data.success) {
+                updateResult(data);
+                saveToHistory(data);
+            } else {
+                showMessage(data.error || 'Prediction failed', 'error');
+                resetUI();
+            }
+        })
+        .catch(function() {
+            isProcessing = false;
+            showMessage('Connection error!', 'error');
+            resetUI();
+        });
+    }
+
+    uploadArea.addEventListener('click', function() { fileInput.click(); });
+    uploadArea.addEventListener('dragover', function(e) { e.preventDefault(); uploadArea.classList.add('dragover'); });
+    uploadArea.addEventListener('dragleave', function() { uploadArea.classList.remove('dragover'); });
+    uploadArea.addEventListener('drop', function(e) {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+        if (e.dataTransfer.files.length) { handleFile(e.dataTransfer.files[0]); }
+    });
+    fileInput.addEventListener('change', function(e) {
+        if (e.target.files.length) { handleFile(e.target.files[0]); }
+    });
+
+    demoBtn?.addEventListener('click', function() {
+        var canvas = document.createElement('canvas');
+        canvas.width = 28; canvas.height = 28;
+        var ctx = canvas.getContext('2d');
+        ctx.fillStyle = 'white'; ctx.fillRect(0, 0, 28, 28);
+        ctx.fillStyle = 'black'; ctx.font = 'bold 22px Arial';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText('5', 14, 16);
+        canvas.toBlob(function(blob) {
+            var file = new File([blob], 'demo.png', { type: 'image/png' });
+            handleFile(file);
+        });
+    });
+
+    closeBtn?.addEventListener('click', resetUI);
+    resetBtn?.addEventListener('click', resetUI);
+
+    saveBtn?.addEventListener('click', function() {
+        var digit = predictedDigit.textContent;
+        var confidence = confidenceText.textContent;
+        this.innerHTML = '<i class="fas fa-check"></i> Saved!';
+        this.style.background = 'linear-gradient(135deg, #00f2fe, #4facfe)';
+        setTimeout(function() {
+            saveBtn.innerHTML = '<i class="fas fa-save"></i> Save';
+            saveBtn.style.background = '';
+        }, 1500);
+        showMessage('✅ Digit ' + digit + ' saved! ' + confidence, 'info');
+    });
+
+    downloadBtn?.addEventListener('click', function() {
+        var digit = predictedDigit.textContent;
+        var confidence = confidenceText.textContent;
+        var report = '===========================\nAI DIGIT RECOGNITION REPORT\n===========================\nPredicted Digit: ' + digit + '\nConfidence: ' + confidence + '\nTimestamp: ' + new Date().toLocaleString() + '\n===========================\nGenerated by AI Recognizer Pro v3.0';
+        var blob = new Blob([report], { type: 'text/plain' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'digit_report_' + Date.now() + '.txt';
+        a.click();
+        URL.revokeObjectURL(url);
+    });
+});
+</script>
 {% endblock %}

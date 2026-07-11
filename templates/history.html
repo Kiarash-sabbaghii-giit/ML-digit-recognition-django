@@ -1,50 +1,142 @@
 {% extends 'base.html' %}
-{% load static %}
 
 {% block title %}History - AI Digit Recognizer{% endblock %}
 
 {% block content %}
 <div class="container history-page">
-    <h1 class="page-title" data-aos="fade-down">Prediction History</h1>
-    <p class="history-subtitle" data-aos="fade-down" data-aos-delay="100">Your last 20 predictions stored locally</p>
-    
-    <div class="history-actions" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
-        <button class="btn btn-secondary" id="clearHistory">
-            <i class="fas fa-trash"></i> Clear All
-        </button>
-        <button class="btn btn-primary" id="exportHistory">
-            <i class="fas fa-download"></i> Export JSON
-        </button>
-        <button class="btn btn-download" id="exportCSV">
-            <i class="fas fa-file-csv"></i> Export CSV
-        </button>
+    <div class="history-header" data-aos="fade-down" data-aos-duration="1000">
+        <h1 class="page-title"><i class="fas fa-history"></i> Prediction History</h1>
+        <p class="history-subtitle">Your last 20 predictions are stored locally in your browser</p>
     </div>
-    
-    <div class="history-stats" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+
+    <div class="history-stats" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
         <div class="history-stat">
+            <div class="stat-icon"><i class="fas fa-calculator"></i></div>
             <span class="stat-number" id="totalPredictions">0</span>
             <span class="stat-label">Total Predictions</span>
         </div>
         <div class="history-stat">
+            <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
             <span class="stat-number" id="avgConfidence">0%</span>
             <span class="stat-label">Average Confidence</span>
         </div>
         <div class="history-stat">
+            <div class="stat-icon"><i class="fas fa-crown"></i></div>
             <span class="stat-number" id="mostCommonDigit">-</span>
             <span class="stat-label">Most Common Digit</span>
         </div>
     </div>
-    
-    <div class="history-list" id="historyList" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
-        <div class="empty-history">
-            <i class="fas fa-inbox fa-3x"></i>
-            <p>No predictions yet. Start recognizing digits!</p>
-            <a href="/" class="btn btn-primary">Go to Home</a>
+
+    <div class="history-actions" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+        <button class="btn btn-danger" id="clearHistory"><i class="fas fa-trash-alt"></i> Clear All</button>
+        <button class="btn btn-primary" id="exportHistory"><i class="fas fa-file-json"></i> Export JSON</button>
+        <button class="btn btn-success" id="exportCSV"><i class="fas fa-file-csv"></i> Export CSV</button>
+    </div>
+
+    <div class="history-list-container" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+        <div class="history-list-header">
+            <span class="h-col digit-col">Digit</span>
+            <span class="h-col confidence-col">Confidence</span>
+            <span class="h-col time-col">Timestamp</span>
+        </div>
+        <div class="history-list" id="historyList">
+            <div class="empty-history">
+                <i class="fas fa-inbox fa-4x"></i>
+                <h3>No Predictions Yet</h3>
+                <p>Start recognizing digits and they will appear here</p>
+                <a href="/" class="btn btn-primary"><i class="fas fa-arrow-right"></i> Go to Home</a>
+            </div>
         </div>
     </div>
 </div>
-{% endblock %}
 
-{% block extra_js %}
-<script src="{% static 'js/history.js' %}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var historyList = document.getElementById('historyList');
+    var clearBtn = document.getElementById('clearHistory');
+    var exportBtn = document.getElementById('exportHistory');
+    var exportCSV = document.getElementById('exportCSV');
+    var totalPredictions = document.getElementById('totalPredictions');
+    var avgConfidence = document.getElementById('avgConfidence');
+    var mostCommonDigit = document.getElementById('mostCommonDigit');
+
+    function showToast(message, type) {
+        var toast = document.createElement('div');
+        toast.style.cssText = 'position:fixed;bottom:30px;right:30px;z-index:9999;padding:14px 24px;border-radius:12px;background:rgba(15,12,41,0.95);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.05);color:#fff;font-size:0.9rem;display:flex;align-items:center;gap:12px;transform:translateX(120%);transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.3)';
+        var icon = type === 'success' ? 'fa-check-circle' : type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle';
+        var color = type === 'success' ? '#00f2fe' : type === 'warning' ? '#f093fb' : '#4facfe';
+        toast.innerHTML = '<i class="fas ' + icon + '" style="color:' + color + ';"></i> ' + message;
+        document.body.appendChild(toast);
+        setTimeout(function() { toast.style.transform = 'translateX(0)'; }, 10);
+        setTimeout(function() { toast.style.transform = 'translateX(120%)'; setTimeout(function() { toast.remove(); }, 300); }, 3000);
+    }
+
+    function loadHistory() {
+        var history = JSON.parse(localStorage.getItem('digitHistory') || '[]');
+        totalPredictions.textContent = history.length;
+
+        if (history.length > 0) {
+            var avg = history.reduce(function(sum, h) { return sum + h.confidence; }, 0) / history.length;
+            avgConfidence.textContent = (avg * 100).toFixed(1) + '%';
+            var digitCount = {};
+            history.forEach(function(h) { digitCount[h.digit] = (digitCount[h.digit] || 0) + 1; });
+            var maxDigit = Object.keys(digitCount).reduce(function(a, b) { return digitCount[a] > digitCount[b] ? a : b; });
+            mostCommonDigit.textContent = maxDigit;
+        } else {
+            avgConfidence.textContent = '0%';
+            mostCommonDigit.textContent = '-';
+        }
+
+        if (history.length === 0) {
+            historyList.innerHTML = '<div class="empty-history"><i class="fas fa-inbox fa-4x"></i><h3>No Predictions Yet</h3><p>Start recognizing digits and they will appear here</p><a href="/" class="btn btn-primary"><i class="fas fa-arrow-right"></i> Go to Home</a></div>';
+            return;
+        }
+
+        historyList.innerHTML = history.map(function(item, index) {
+            return '<div class="history-item" style="animation-delay:' + (index * 0.05) + 's"><span class="h-digit">' + item.digit + '</span><span class="h-confidence">' + (item.confidence * 100).toFixed(1) + '%</span><span class="h-time"><i class="far fa-clock"></i> ' + item.timestamp + '</span></div>';
+        }).join('');
+    }
+
+    clearBtn?.addEventListener('click', function() {
+        if (confirm('⚠️ Are you sure you want to clear all history?')) {
+            localStorage.removeItem('digitHistory');
+            loadHistory();
+            this.innerHTML = '<i class="fas fa-check"></i> Cleared!';
+            setTimeout(function() { clearBtn.innerHTML = '<i class="fas fa-trash-alt"></i> Clear All'; }, 2000);
+        }
+    });
+
+    exportBtn?.addEventListener('click', function() {
+        var history = JSON.parse(localStorage.getItem('digitHistory') || '[]');
+        if (history.length === 0) { showToast('No history to export!', 'warning'); return; }
+        var data = { exported_at: new Date().toISOString(), total: history.length, history: history };
+        var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'digit_history_' + new Date().toISOString().slice(0,10) + '.json';
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('✅ JSON exported successfully!', 'success');
+    });
+
+    exportCSV?.addEventListener('click', function() {
+        var history = JSON.parse(localStorage.getItem('digitHistory') || '[]');
+        if (history.length === 0) { showToast('No history to export!', 'warning'); return; }
+        var headers = 'Digit,Confidence,Timestamp\n';
+        var rows = history.map(function(h) { return h.digit + ',' + (h.confidence * 100).toFixed(2) + '%,' + h.timestamp; }).join('\n');
+        var csv = headers + rows;
+        var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'digit_history_' + new Date().toISOString().slice(0,10) + '.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('✅ CSV exported successfully!', 'success');
+    });
+
+    loadHistory();
+});
+</script>
 {% endblock %}
