@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}AI Digit Recognizer Pro{% endblock %}</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- ===== PRELOADER ===== -->
+    <div id="preloader">
+        <div class="loader">
+            <div class="loader-ring"></div>
+            <div class="loader-ring"></div>
+            <div class="loader-ring"></div>
+            <div class="loader-text">Loading AI Engine...</div>
+        </div>
+    </div>
+
+    <!-- ===== PARTICLES ===== -->
+    <div id="particles-js"></div>
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <!-- Logo -->
+            <div class="nav-logo">
+                <a href="/" class="logo-link">
+                    <div class="logo-icon">
+                        <i class="fas fa-brain"></i>
+                        <div class="logo-pulse"></div>
+                    </div>
+                    <span class="logo-text">AI<span>Recognizer</span></span>
+                    <span class="logo-badge">v3.0</span>
+                </a>
+            </div>
+
+            <!-- Menu -->
+            <ul class="nav-menu" id="navMenu">
+                <li>
+                    <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                        <div class="nav-hover-line"></div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/about/" class="nav-link {% if request.path == '/about/' %}active{% endif %}">
+                        <i class="fas fa-info-circle"></i>
+                        <span>About</span>
+                        <div class="nav-hover-line"></div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/history/" class="nav-link {% if request.path == '/history/' %}active{% endif %}">
+                        <i class="fas fa-history"></i>
+                        <span>History</span>
+                        <div class="nav-hover-line"></div>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Right Side -->
+            <div class="nav-right">
+                <div class="nav-status">
+                    <span class="status-dot online"></span>
+                    <span class="status-text">AI Ready</span>
+                </div>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="nav-toggle" id="navToggle" aria-label="Toggle Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="nav-progress" id="navProgress"></div>
+    </nav>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <i class="fas fa-brain"></i>
+                <span>AI Recognizer Pro</span>
+            </div>
+            <div class="footer-links">
+                <a href="/" title="Home"><i class="fas fa-home"></i></a>
+                <a href="/about/" title="About"><i class="fas fa-info-circle"></i></a>
+                <a href="/history/" title="History"><i class="fas fa-history"></i></a>
+                <a href="#" title="GitHub" id="footerGithub"><i class="fab fa-github"></i></a>
+                <a href="#" title="Twitter" id="footerTwitter"><i class="fab fa-twitter"></i></a>
+            </div>
+            <p>© 2025 AI Recognizer • Built with <i class="fas fa-heart" style="color: #f5576c;"></i> and Python</p>
+        </div>
+    </footer>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script src="{% static 'js/animations.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

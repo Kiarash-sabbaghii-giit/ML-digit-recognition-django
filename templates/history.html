@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}History - AI Digit Recognizer{% endblock %}
+
+{% block content %}
+<div class="container history-page">
+    <h1 class="page-title" data-aos="fade-down">Prediction History</h1>
+    <p class="history-subtitle" data-aos="fade-down" data-aos-delay="100">Your last 20 predictions stored locally</p>
+    
+    <div class="history-actions" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+        <button class="btn btn-secondary" id="clearHistory">
+            <i class="fas fa-trash"></i> Clear All
+        </button>
+        <button class="btn btn-primary" id="exportHistory">
+            <i class="fas fa-download"></i> Export JSON
+        </button>
+        <button class="btn btn-download" id="exportCSV">
+            <i class="fas fa-file-csv"></i> Export CSV
+        </button>
+    </div>
+    
+    <div class="history-stats" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+        <div class="history-stat">
+            <span class="stat-number" id="totalPredictions">0</span>
+            <span class="stat-label">Total Predictions</span>
+        </div>
+        <div class="history-stat">
+            <span class="stat-number" id="avgConfidence">0%</span>
+            <span class="stat-label">Average Confidence</span>
+        </div>
+        <div class="history-stat">
+            <span class="stat-number" id="mostCommonDigit">-</span>
+            <span class="stat-label">Most Common Digit</span>
+        </div>
+    </div>
+    
+    <div class="history-list" id="historyList" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
+        <div class="empty-history">
+            <i class="fas fa-inbox fa-3x"></i>
+            <p>No predictions yet. Start recognizing digits!</p>
+            <a href="/" class="btn btn-primary">Go to Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/history.js' %}"></script>
+{% endblock %}

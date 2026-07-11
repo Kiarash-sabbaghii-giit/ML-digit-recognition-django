@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - AI Digit Recognizer{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Header -->
+    <header class="header" data-aos="fade-down" data-aos-duration="1000">
+        <div class="header-badge">
+            <i class="fas fa-robot"></i>
+            <span>AI Powered</span>
+        </div>
+        <h1 class="glitch-text" data-text="Digit Recognizer">Digit Recognizer</h1>
+        <p class="subtitle">Next-Generation Handwritten Digit Recognition</p>
+        <div class="header-stats">
+            <div class="stat-item">
+                <span class="stat-number">97.8%</span>
+                <span class="stat-label">Accuracy</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-number">5</span>
+                <span class="stat-label">ML Models</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <span class="stat-number">50K+</span>
+                <span class="stat-label">Images Trained</span>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Upload Section -->
+    <section class="upload-section" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+        <div class="upload-area" id="uploadArea">
+            <div class="upload-content">
+                <div class="upload-icon-wrapper">
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                    <div class="pulse-ring"></div>
+                </div>
+                <h3>Drop Your Image Here</h3>
+                <p>Supported: PNG, JPG, JPEG • Max: 5MB</p>
+                <div class="upload-actions">
+                    <label for="fileInput" class="upload-btn">
+                        <i class="fas fa-folder-open"></i>
+                        Browse Files
+                    </label>
+                    <span class="upload-or">or</span>
+                    <button class="upload-demo-btn" id="demoBtn">
+                        <i class="fas fa-play"></i>
+                        Try Demo
+                    </button>
+                </div>
+                <input type="file" id="fileInput" accept="image/*" hidden />
+            </div>
+            <div class="drag-overlay" id="dragOverlay">
+                <i class="fas fa-file-image"></i>
+                <h4>Drop to Upload</h4>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Result Section -->
+    <section class="result-section" id="resultSection" style="display: none;">
+        <div class="result-grid">
+            <!-- Preview -->
+            <div class="preview-box" data-aos="fade-right" data-aos-duration="800">
+                <div class="preview-header">
+                    <i class="fas fa-image"></i>
+                    <span>Uploaded Image</span>
+                    <button class="preview-close" id="closeResult">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="preview-content">
+                    <img id="imagePreview" src="" alt="Preview" />
+                </div>
+                <div class="preview-footer">
+                    <span id="imageSize">0 KB</span>
+                    <span id="imageDimensions">0x0</span>
+                </div>
+            </div>
+            
+            <!-- Result -->
+            <div class="result-box" data-aos="fade-left" data-aos-duration="800" data-aos-delay="200">
+                <div class="result-header">
+                    <i class="fas fa-robot"></i>
+                    <span>AI Prediction</span>
+                    <span class="result-status" id="resultStatus">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        Analyzing...
+                    </span>
+                </div>
+                
+                <div class="digit-display">
+                    <span class="digit" id="predictedDigit">?</span>
+                    <span class="digit-label">Predicted Digit</span>
+                </div>
+                
+                <div class="confidence-section">
+                    <div class="confidence-header">
+                        <span>Confidence Level</span>
+                        <span class="confidence-text" id="confidenceText">0%</span>
+                    </div>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" id="confidenceFill"></div>
+                    </div>
+                    <div class="confidence-markers">
+                        <span>0%</span>
+                        <span>50%</span>
+                        <span>100%</span>
+                    </div>
+                </div>
+                
+                <div class="probabilities" id="probabilities"></div>
+                
+                <div class="result-actions">
+                    <button class="btn btn-primary" id="saveResult">
+                        <i class="fas fa-save"></i> Save
+                    </button>
+                    <button class="btn btn-secondary" id="resetBtn">
+                        <i class="fas fa-redo"></i> New
+                    </button>
+                    <button class="btn btn-download" id="downloadResult">
+                        <i class="fas fa-download"></i> Report
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features -->
+    <section class="features-section" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
+        <h2><i class="fas fa-star"></i> Why Choose AI Recognizer?</h2>
+        <div class="features-grid">
+            <div class="feature-card" data-aos="flip-up" data-aos-duration="800" data-aos-delay="100">
+                <div class="feature-icon"><i class="fas fa-microchip"></i></div>
+                <h4>AI Powered</h4>
+                <p>Advanced machine learning models with 97.8% accuracy</p>
+                <span class="feature-tag">Best-in-class</span>
+            </div>
+            <div class="feature-card" data-aos="flip-up" data-aos-duration="800" data-aos-delay="200">
+                <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                <h4>Lightning Fast</h4>
+                <p>Real-time predictions under 100ms response time</p>
+                <span class="feature-tag">&lt;100ms</span>
+            </div>
+            <div class="feature-card" data-aos="flip-up" data-aos-duration="800" data-aos-delay="300">
+                <div class="feature-icon"><i class="fas fa-lock"></i></div>
+                <h4>100% Private</h4>
+                <p>Processed locally, never stored on servers</p>
+                <span class="feature-tag"><i class="fas fa-shield-alt"></i> Secure</span>
+            </div>
+            <div class="feature-card" data-aos="flip-up" data-aos-duration="800" data-aos-delay="400">
+                <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                <h4>Analytics</h4>
+                <p>Track history and export detailed reports</p>
+                <span class="feature-tag"><i class="fas fa-database"></i> Insights</span>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/main.js' %}"></script>
+{% endblock %}
